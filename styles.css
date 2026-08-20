@@ -138,14 +138,29 @@ body {
     font-size: 1.5em;
 }
 
-.contact-container {
+.page-container {
     background: rgba(0, 0, 0, 0.2);
-    padding: 30px;
     border-radius: 10px;
     max-width: 600px;
     margin: 0 auto;
+}
+.page-container.contact {
+    padding: 30px;
     text-align: left;
 }
+.page-container.success {
+    padding: 40px 30px;
+    text-align: center;
+}
+.page-container h2 {
+    margin-top: 0;
+    font-size: 2em;
+}
+.page-container p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -169,7 +184,8 @@ select, option {
     background: white !important;
     text-shadow: none !important;
 }
-.contact-form button {
+
+.primary-btn {
     background-color: #1FBAED;
     color: white;
     border: none;
@@ -178,11 +194,15 @@ select, option {
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
     transition: background 0.3s;
+    display: inline-block;
+    box-sizing: border-box;
 }
-.contact-form button:hover {
+.primary-btn:hover {
     background-color: #1698c4;
 }
+
 .back-link {
     margin-top: 20px;
     display: inline-block;
