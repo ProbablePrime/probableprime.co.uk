@@ -9,6 +9,12 @@ export default {
     }
 
     // everything else: serve static files as before
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    
+    if (response.status === 404) {
+      return Response.redirect(new URL("/", request.url), 302);
+    }
+    
+    return response;
   }
 };
