@@ -1,8 +1,10 @@
 function checkEnv(env) {
-    const envsToCheck = [env.TURNSTILE_SECRET, env.RESEND_API_KEY, env.CONTACT_TO, env.CONTACT_FROM];
-    for (const item of envsToCheck) {
-        if (!item)
+    const envsToCheck = ["TURNSTILE_SECRET", "RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM"];
+    for (const key of envsToCheck) {
+        if (!env[key]) {
+            console.error(`Missing environment variable: ${key}`);
             return new Response("Server configuration error", { status: 500, headers: { "Content-Type": "text/plain" } });
+        }
     }
     return null;
 }
