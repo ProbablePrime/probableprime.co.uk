@@ -1,0 +1,190 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: #3C7FB1;
+}
+
+.v {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.inline-socicon {
+    font-size: 3em;
+    color: #FFF;
+    border-radius: 35px;
+    padding: 12px;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.icons {
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+
+.socicon-mixer {
+    background-color: #1FBAED;
+}
+
+.socicon-discord {
+    background-color: #7289da;
+}
+
+.socicon-github {
+    background-color: #221e1b;
+}
+
+.socicon-twitter {
+    background-color: #4da7de;
+}
+
+.socicon-bluesky {
+    background-color: #1889FE;
+}
+
+.socicon-medium {
+    background-color: #000;
+}
+
+.socicon-youtube {
+    background-color: #e52d27;
+}
+
+.socicon-twitch {
+    background-color: #6441a5;
+}
+
+.socicon-patreon {
+    background-color: #FF424E;
+}
+
+.col-md-1 {
+    display: flex;
+    justify-content: center;
+}
+
+.kofi img {
+    width: 300px;
+}
+
+body {
+    color: white;
+}
+
+.text {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.seven a {
+    color: #1C7CA9 !important;
+    font-size: 2em;
+}
+
+.startups {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.startup-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    height: 120px;
+    min-width: 220px;
+    width: 100%;
+}
+
+.startup-logo {
+    height: 100px;
+    margin-bottom: 8px;
+    object-fit: cover;
+}
+
+.startup-info {
+    text-align: center;
+}
+
+.startup-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.startup-years {
+    font-size: 1.1em;
+}
+
+.col-startup {
+    display: flex;
+    justify-content: center;
+}
+.tagline {
+    font-size: 1.5em;
+}
+
+.contact-container {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.contact-form label {
+    font-weight: bold;
+}
+.contact-form input, 
+.contact-form select, 
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #000;
+    box-sizing: border-box;
+}
+select, option {
+    color: black !important;
+    background: white !important;
+    text-shadow: none !important;
+}
+.contact-form button {
+    background-color: #1FBAED;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.contact-form button:hover {
+    background-color: #1698c4;
+}
+.back-link {
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: underline;
+}

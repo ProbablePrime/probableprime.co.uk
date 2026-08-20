@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>ProbablePrime - Contact</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+        type="text/css">
+    <link rel="stylesheet" href="socicon.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+
+<body>
+    <div class="v" style="height: auto; min-height: 100vh; padding: 40px 0;">
+        <div class="row center-xs">
+            <div class="col-sm-12">
+                <a href="/"><img src="logo.png" alt="ProbablePrime's Logo" style="max-width: 200px;" /></a>
+            </div>
+        </div>
+        <div class="row center-xs text">
+            <div class="col-sm-12 tagline">
+                Contact Me
+            </div>
+        </div>
+        <div class="row center-xs">
+            <div class="col-sm-12 col-md-8">
+                <div class="contact-container">
+                    <form action="/contact" method="POST" class="contact-form">
+                        <div>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required />
+                        </div>
+                        
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+
+                        <div>
+                            <label for="cat">Category</label>
+                            <select id="cat" name="cat" required>
+                                <option value="select">Select a category...</option>
+                                <option value="General Enquiry">General Enquiry</option>
+                                <option value="Business Proposal">Business Proposal</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+
+                        <div style="display: none;">
+                            <input type="checkbox" name="GsCxeZTv" value="Yes" tabindex="-1" autocomplete="off" />
+                        </div>
+
+                        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA"></div>
+
+                        <button type="submit">Send Message</button>
+                    </form>
+                    <div style="text-align: center;">
+                        <a href="/" class="back-link">Back to Homepage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
