@@ -1,1 +1,0 @@
-http://socicon.teddypayet.com/

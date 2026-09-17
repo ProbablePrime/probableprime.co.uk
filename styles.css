@@ -16,11 +16,16 @@ body {
     flex-direction: column;
 }
 
-.inline-socicon {
+.inline-icon {
     font-size: 3em;
     color: #FFF;
-    border-radius: 35px;
-    padding: 12px;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 a {
@@ -33,39 +38,35 @@ a {
     margin-bottom: 50px;
 }
 
-.socicon-mixer {
-    background-color: #1FBAED;
-}
-
-.socicon-discord {
-    background-color: #7289da;
-}
-
-.socicon-github {
-    background-color: #221e1b;
-}
-
-.socicon-twitter {
-    background-color: #4da7de;
-}
-
-.socicon-bluesky {
-    background-color: #1889FE;
-}
-
-.socicon-medium {
-    background-color: #000;
-}
-
-.socicon-youtube {
-    background-color: #e52d27;
-}
-
-.socicon-twitch {
+.fa-twitch {
     background-color: #6441a5;
 }
 
-.socicon-patreon {
+.fa-discord {
+    background-color: #7289da;
+}
+
+.fa-github {
+    background-color: #221e1b;
+}
+
+.fa-x-twitter {
+    background-color: #000000;
+}
+
+.fa-bluesky {
+    background-color: #1889FE;
+}
+
+.fa-square-bluesky {
+    background-color: #1889FE;
+}
+
+.fa-youtube {
+    background-color: #e52d27;
+}
+
+.fa-patreon {
     background-color: #FF424E;
 }
 
