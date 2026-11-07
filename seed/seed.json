@@ -147,13 +147,8 @@
 				},
 				{
 					"type": "custom",
-					"label": "Blog",
-					"url": "/blog"
-				},
-				{
-					"type": "custom",
 					"label": "About",
-					"url": "/pages/about"
+					"url": "/about"
 				},
 				{
 					"type": "custom",
@@ -277,30 +272,6 @@
 								}
 							],
 							"_key": "k5"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Over the years that has included motorsport telemetry at Track Intelligence (2011 to 2016), streaming and interactivity at Mixer (2016 to 2020), and XR and social at Resonite (2020 to now).",
-									"_key": "k6"
-								}
-							],
-							"_key": "k7"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "If you want to get in touch, use the contact page.",
-									"_key": "k8"
-								}
-							],
-							"_key": "k9"
 						}
 					]
 				}

@@ -1,6 +1,6 @@
 ---
 import { env } from "cloudflare:workers";
-import Landing from "../layouts/Landing.astro";
+import Base from "../layouts/Base.astro";
 import { handleContactForm, type ContactEnv } from "../lib/contact";
 
 if (Astro.request.method === "POST") {
@@ -17,58 +17,119 @@ const categories = [
 ];
 ---
 
-<Landing title="ProbablePrime - Contact" scroll>
-	<script slot="head" is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<Base title="Contact" description="Get in touch with ProbablePrime.">
+	<script
+		slot="head"
+		is:inline
+		src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+		async
+		defer></script>
 
-	<div class="v">
-		<div class="row center-xs middle-xs">
-			<div class="col-xs-12 col-sm-12 col-md-12">
-				<a href="/"><img src="/images/logo.png" alt="ProbablePrime's Logo" style="max-width: 200px;" /></a>
-			</div>
+	<header class="band intro">
+		<div class="frame">
+			<p class="eyebrow">Contact</p>
+			<h1 class="intro__title">How can I help?</h1>
+			<p class="intro__subtitle">Send me a message and I'll get back to you.</p>
 		</div>
-		<div class="row center-xs middle-xs text">
-			<div class="col-xs-12 col-sm-12 col-md-12 tagline">Contact Me</div>
-		</div>
-		<div class="row center-xs middle-xs">
-			<div class="col-xs-12 col-sm-12 col-md-8">
-				<div class="page-container contact">
-					<form action="/contact" method="POST" class="contact-form">
-						<div>
-							<label for="name">Name</label>
-							<input type="text" id="name" name="name" required />
-						</div>
+	</header>
 
-						<div>
-							<label for="email">Email</label>
-							<input type="email" id="email" name="email" required />
-						</div>
-
-						<div>
-							<label for="cat">Category</label>
-							<select id="cat" name="cat" required>
-								<option value="select">Select a category...</option>
-								{categories.map((c) => <option value={c}>{c}</option>)}
-							</select>
-						</div>
-
-						<div>
-							<label for="message">Message</label>
-							<textarea id="message" name="message" rows="5" required></textarea>
-						</div>
-
-						<div style="display: none;">
-							<input type="checkbox" name="GsCxeZTv" value="Yes" tabindex="-1" autocomplete="off" />
-						</div>
-
-						<div class="cf-turnstile" data-sitekey="0x4AAAAAAEWM1SAh23iQ5K5p"></div>
-
-						<button type="submit" class="primary-btn">Send Message</button>
-					</form>
-					<div style="text-align: center;">
-						<a href="/" class="back-link">Back to Homepage</a>
+	<section class="band section">
+		<div class="frame">
+			<form action="/contact" method="POST" class="contact-form">
+				<div class="field-row">
+					<div class="field">
+						<label for="name">Name</label>
+						<input type="text" id="name" name="name" autocomplete="name" required />
+					</div>
+					<div class="field">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" autocomplete="email" required />
 					</div>
 				</div>
-			</div>
+
+				<div class="field">
+					<label for="cat">Category</label>
+					<select id="cat" name="cat" required>
+						<option value="">Select a category...</option>
+						{categories.map((c) => <option value={c}>{c}</option>)}
+					</select>
+				</div>
+
+				<div class="field">
+					<label for="message">Message</label>
+					<textarea id="message" name="message" rows="7" required></textarea>
+				</div>
+
+				<div hidden>
+					<input type="checkbox" name="GsCxeZTv" value="Yes" tabindex="-1" autocomplete="off" />
+				</div>
+
+				<div class="cf-turnstile" data-sitekey="0x4AAAAAAEWM1SAh23iQ5K5p" data-theme="auto"></div>
+
+				<div>
+					<button type="submit" class="btn">Send message</button>
+				</div>
+			</form>
 		</div>
-	</div>
-</Landing>
+	</section>
+</Base>
+
+<style>
+	.section {
+		padding-block: var(--spacing-12) var(--spacing-16);
+	}
+
+	.contact-form {
+		display: grid;
+		gap: var(--spacing-5);
+		max-width: var(--content-width);
+		padding: clamp(var(--spacing-5), 4vw, var(--spacing-10));
+		border-radius: var(--radius-xl);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-card);
+	}
+
+	.field-row {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--spacing-5);
+	}
+
+	.field {
+		display: grid;
+		gap: var(--spacing-2);
+	}
+
+	label {
+		font-size: var(--font-size-sm);
+		font-weight: 600;
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		padding: 0.625rem 0.75rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius);
+		background: var(--color-bg);
+		color: var(--color-text);
+		font: inherit;
+		transition:
+			border-color var(--transition-fast),
+			box-shadow var(--transition-fast);
+	}
+
+	textarea {
+		resize: vertical;
+		min-height: 9rem;
+	}
+
+	input:focus,
+	select:focus,
+	textarea:focus {
+		outline: none;
+		border-color: var(--color-brand);
+		box-shadow: 0 0 0 3px var(--color-brand-ring);
+	}
+</style>

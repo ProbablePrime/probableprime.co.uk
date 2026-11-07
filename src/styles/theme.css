@@ -64,3 +64,10 @@
 	flex-shrink: 0;
 	border-radius: 50%;
 }
+
+:root body .site-footer__seven {
+	margin-inline-start: var(--spacing-2);
+	color: var(--pp-cyan);
+	font-weight: 700;
+	text-decoration: none;
+}

@@ -11,6 +11,7 @@ import LiveSearch from "emdash/ui/search";
 import { Font } from "astro:assets";
 import { getSiteLocale } from "../utils/locale";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import SocialLinks from "../components/SocialLinks.astro";
 import "../styles/tokens.css";
 import "../styles/theme.css";
 
@@ -116,6 +117,19 @@ const year = new Date().getFullYear();
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
 		<link rel="icon" href="/images/favicon.ico" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css"
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css"
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<slot name="head" />
 		<link
 			rel="alternate"
 			type="application/rss+xml"
@@ -273,6 +287,7 @@ const year = new Date().getFullYear();
 						}
 					</a>
 					{siteTagline && <p class="site-footer__tagline">{siteTagline}</p>}
+					<SocialLinks />
 				</div>
 				{
 					menuItems.length > 0 && (
@@ -333,6 +348,7 @@ const year = new Date().getFullYear();
 					<p class="site-footer__meta">
 						{`© ${year} ${siteTitle}.`} Powered by{" "}
 						<a href="https://emdashcms.com">EmDash</a>
+						<a href="/7/" class="site-footer__seven" aria-label="7">7</a>
 					</p>
 					<div class="theme-switcher" role="group" aria-label="Color theme">
 						<button

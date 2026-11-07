@@ -12,6 +12,8 @@ export default defineConfig({
 		"/index.html": "/",
 		"/contact.html": "/contact",
 		"/success.html": "/success",
+		"/blog": "/",
+		"/pages/about": "/about",
 	},
 	adapter: cloudflare(),
 	image: {
