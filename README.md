@@ -19,12 +19,13 @@ An [Astro](https://astro.build) site with the EmDash CMS, started from EmDash's 
 
 | Path | What | Source |
 | --- | --- | --- |
-| `/` | Landing page (the original site) | `src/pages/index.astro`, `src/styles/landing.css` |
+| `/`, `/posts/*`, `/pages/*`, `/category/*`, `/tag/*`, `/search`, `/rss.xml` | Blog (EmDash template) | `src/pages/`, `src/layouts/Base.astro` |
+| `/about` | About text (from the CMS) + startups | `src/pages/about.astro`, `src/data/profile.ts` |
 | `/contact`, `/success` | Contact form (Turnstile + Resend) | `src/pages/contact.astro`, `src/lib/contact.ts` |
-| `/blog`, `/posts/*`, `/pages/*`, `/category/*`, `/tag/*`, `/search`, `/rss.xml` | Blog (EmDash template) | `src/pages/`, `src/layouts/Base.astro` |
+| `/.well-known/site.standard.publication` | AT Protocol ownership proof | `src/pages/.well-known/` |
 | `/7` | 7 | `public/7/` |
 
-Blog branding overrides live in `src/styles/theme.css`. The schema and first-run content are in `seed/seed.json`. See `AGENTS.md` for the template's notes.
+Blog branding overrides live in `src/styles/theme.css`. Social links and startups are in `src/data/profile.ts`. The schema and first-run content are in `seed/seed.json`. See `AGENTS.md` for the template's notes.
 
 ## Local development
 
@@ -49,3 +50,28 @@ pnpm run deploy
 ```
 
 The first deploy creates the D1 database and R2 bucket named in `wrangler.jsonc`. Then open https://probableprime.co.uk/_emdash/admin to run the setup wizard and register a passkey. Passkeys are tied to the hostname, so do setup on the real domain.
+
+## Plugins
+
+Both run in EmDash's plugin sandbox (`sandboxRunner` in `astro.config.mjs`, `LOADER` binding in `wrangler.jsonc`), which needs Workers Paid. Their settings live in the admin, not in env vars.
+
+### Email (`emdash-smtp-marketplace`)
+
+Used for magic-link sign-in, user invites and account recovery. Sends through Resend's HTTP API.
+
+1. Admin > Plugins > SMTP Providers: choose Resend, paste a Resend API key, set the default sender (an address on a domain verified in Resend).
+2. Settings > Email: select SMTP as the transport.
+3. Send a test email from Settings > Email.
+
+The contact form does not use this; it calls Resend directly from `src/lib/contact.ts`.
+
+### Bluesky / AT Protocol (`@emdash-cms/plugin-atproto`)
+
+Publishes each post as a `site.standard.document` record on your PDS and, optionally, cross-posts to Bluesky.
+
+1. Create an app password at https://bsky.app/settings/app-passwords.
+2. Admin > AT Protocol: handle, app password, Site URL `https://probableprime.co.uk`, Site Name `ProbablePrime`. Save, then Test Connection.
+3. Sync Publication. Copy the Publication URI it shows (`at://...`).
+4. Add it to `wrangler.jsonc` under `"vars": { "ATPROTO_PUBLICATION_URI": "at://..." }` and deploy. `/.well-known/site.standard.publication` then serves it, which proves you own the site.
+
+Posts published after that are synced automatically; synced posts get a `<link rel="site.standard.document">` tag.

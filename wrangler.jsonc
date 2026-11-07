@@ -18,8 +18,8 @@
 			"bucket_name": "probableprime-co-uk-media",
 		},
 	],
-	// Sandboxed plugins require Worker Loader, available on Workers paid plans. Uncomment to enable:
-	// "worker_loaders": [{ "binding": "LOADER" }],
+	// Sandboxed EmDash plugins (SMTP, AT Protocol). Requires Workers Paid.
+	"worker_loaders": [{ "binding": "LOADER" }],
 	// EmDash maintenance + scheduled publishing
 	"triggers": {
 		"crons": ["* * * * *"],
