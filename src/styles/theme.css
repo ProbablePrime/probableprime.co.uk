@@ -42,15 +42,28 @@
 	text-decoration: none;
 }
 
+/* Flat nav links: no pill background, an underline marks the current page. */
 :root body .site-header .site-nav a {
-	color: rgb(255 255 255 / 0.85);
-	text-decoration: none;
+	border-radius: 0;
+	background: none;
+	color: rgb(255 255 255 / 0.8);
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.45em;
 }
 
-:root body .site-header .site-nav a:hover,
-:root body .site-header .site-nav a[aria-current] {
+:root body .site-header .site-nav a:hover {
+	background: none;
 	color: #fff;
-	background: rgb(255 255 255 / 0.15);
+	text-decoration-color: rgb(255 255 255 / 0.5);
+}
+
+:root body .site-header .site-nav a[aria-current] {
+	background: none;
+	box-shadow: none;
+	color: #fff;
+	text-decoration-color: #fff;
 }
 
 :root body .site-header .nav-admin,
