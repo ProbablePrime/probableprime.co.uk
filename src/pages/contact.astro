@@ -1,0 +1,74 @@
+---
+import { env } from "cloudflare:workers";
+import Landing from "../layouts/Landing.astro";
+import { handleContactForm, type ContactEnv } from "../lib/contact";
+
+if (Astro.request.method === "POST") {
+	return handleContactForm(Astro.request, env as unknown as ContactEnv);
+}
+
+const categories = [
+	"General Enquiry",
+	"PR Enquiry",
+	"Business Proposal",
+	"Media Appearances",
+	"Questions",
+	"Comments",
+];
+---
+
+<Landing title="ProbablePrime - Contact" scroll>
+	<script slot="head" is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+	<div class="v">
+		<div class="row center-xs middle-xs">
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<a href="/"><img src="/images/logo.png" alt="ProbablePrime's Logo" style="max-width: 200px;" /></a>
+			</div>
+		</div>
+		<div class="row center-xs middle-xs text">
+			<div class="col-xs-12 col-sm-12 col-md-12 tagline">Contact Me</div>
+		</div>
+		<div class="row center-xs middle-xs">
+			<div class="col-xs-12 col-sm-12 col-md-8">
+				<div class="page-container contact">
+					<form action="/contact" method="POST" class="contact-form">
+						<div>
+							<label for="name">Name</label>
+							<input type="text" id="name" name="name" required />
+						</div>
+
+						<div>
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" required />
+						</div>
+
+						<div>
+							<label for="cat">Category</label>
+							<select id="cat" name="cat" required>
+								<option value="select">Select a category...</option>
+								{categories.map((c) => <option value={c}>{c}</option>)}
+							</select>
+						</div>
+
+						<div>
+							<label for="message">Message</label>
+							<textarea id="message" name="message" rows="5" required></textarea>
+						</div>
+
+						<div style="display: none;">
+							<input type="checkbox" name="GsCxeZTv" value="Yes" tabindex="-1" autocomplete="off" />
+						</div>
+
+						<div class="cf-turnstile" data-sitekey="0x4AAAAAAEWM1SAh23iQ5K5p"></div>
+
+						<button type="submit" class="primary-btn">Send Message</button>
+					</form>
+					<div style="text-align: center;">
+						<a href="/" class="back-link">Back to Homepage</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</Landing>

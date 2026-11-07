@@ -1,5 +1,15 @@
-function checkEnv(env) {
-    const envsToCheck = ["TURNSTILE_SECRET", "RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM"];
+export interface ContactEnv {
+  TURNSTILE_SECRET?: string;
+  RESEND_API_KEY?: string;
+  CONTACT_TO?: string;
+  CONTACT_FROM?: string;
+}
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function checkEnv(env: ContactEnv) {
+    const envsToCheck: (keyof ContactEnv)[] = ["TURNSTILE_SECRET", "RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM"];
     for (const key of envsToCheck) {
         if (!env[key]) {
             console.error(`Missing environment variable: ${key}`);
@@ -9,7 +19,7 @@ function checkEnv(env) {
     return null;
 }
 
-export async function handleContactForm(request, env) {
+export async function handleContactForm(request: Request, env: ContactEnv): Promise<Response> {
   const res = checkEnv(env);
   if (res)
     return res;
@@ -18,10 +28,10 @@ export async function handleContactForm(request, env) {
   const turnstileSecret = env.TURNSTILE_SECRET;
   const resendApiKey = env.RESEND_API_KEY;
 
-  const badRequest = (msg) =>
+  const badRequest = (msg: string) =>
     new Response(msg, { status: 400, headers: { "Content-Type": "text/plain" } });
 
-  const disguisedFailure = (msg) => {
+  const disguisedFailure = (msg: string) => {
     console.log("Discarding message due to failure in spam detection: " + msg);
     return badRequest("Oops! Something went wrong. Please try again later.");
   };
@@ -33,12 +43,16 @@ export async function handleContactForm(request, env) {
     return badRequest("Invalid form data");
   }
 
-  const name = formData.get("name") || null;
-  const email = formData.get("email") || null;
-  const message = formData.get("message") || null;
-  const cat = formData.get("cat") || null;
-  const honeyPot = formData.get("GsCxeZTv") || null;
-  const turnstileResponse = formData.get("cf-turnstile-response") || null;
+  const field = (key: string) => {
+    const v = formData.get(key);
+    return typeof v === "string" && v !== "" ? v : null;
+  };
+  const name = field("name");
+  const email = field("email");
+  const message = field("message");
+  const cat = field("cat");
+  const honeyPot = field("GsCxeZTv");
+  const turnstileResponse = field("cf-turnstile-response");
 
   if (!name || !email || !message || !cat) {
     return badRequest("Please fill in all required fields.");
@@ -48,7 +62,7 @@ export async function handleContactForm(request, env) {
   if (!turnstileResponse) return disguisedFailure("turnstile");
 
   const turnstileData = new FormData();
-  turnstileData.append("secret", turnstileSecret);
+  turnstileData.append("secret", turnstileSecret!);
   turnstileData.append("response", turnstileResponse);
   turnstileData.append("remoteip", ip);
 
@@ -57,7 +71,7 @@ export async function handleContactForm(request, env) {
     body: turnstileData,
   });
 
-  const turnstileJson = await turnstileResult.json();
+  const turnstileJson = (await turnstileResult.json()) as { success?: boolean };
   if (!turnstileJson.success) return disguisedFailure("turnstile");
 
   let emailContent = `Name: ${name}\n`;
@@ -71,7 +85,7 @@ export async function handleContactForm(request, env) {
     from: env.CONTACT_FROM,
     to: env.CONTACT_TO,
     subject: `${cat} Enquiry from ${name}`,
-    html: emailContent.replace(/\n/g, '<br>'),
+    html: escapeHtml(emailContent).replace(/\n/g, '<br>'),
     reply_to: email
   };
 
@@ -87,5 +101,5 @@ export async function handleContactForm(request, env) {
     return new Response("Oops! Something went wrong sending the email. Please try again later.", { status: 500, headers: { "Content-Type": "text/plain" } });
   }
 
-  return Response.redirect(new URL("/success.html", request.url), 302);
+  return Response.redirect(new URL("/success", request.url), 302);
 }

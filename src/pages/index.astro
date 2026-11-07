@@ -1,0 +1,159 @@
+---
+import { getEmDashCollection } from "emdash";
+import Landing from "../layouts/Landing.astro";
+
+const description =
+	"Hi, I'm ProbablePrime. Software developer and creator working on cool stuff including Resonite, Mixer, and Track Intelligence.";
+
+const socials = [
+	{ href: "https://github.com/ProbablePrime", label: "GitHub Profile", icon: "fa-github" },
+	{ href: "https://x.com/ProbablePrime", label: "X (Twitter) Profile", icon: "fa-x-twitter" },
+	{ href: "https://bsky.app/profile/probableprime.bsky.social", label: "Bluesky Profile", icon: "fa-bluesky" },
+	{ href: "https://www.linkedin.com/in/ahref/", label: "LinkedIn Profile", icon: "fa-linkedin-in" },
+	{ href: "https://twitch.tv/ProbablePrime", label: "Twitch Channel", icon: "fa-twitch" },
+	{ href: "https://www.youtube.com/c/ProbablePrime", label: "YouTube Channel", icon: "fa-youtube" },
+	{ href: "https://discord.com/users/82992971921752064", label: "Discord User Profile", icon: "fa-discord" },
+	{ href: "https://www.patreon.com/probableprime", label: "Patreon Page", icon: "fa-patreon" },
+	{ href: "https://orcid.org/0000-0003-1956-7261", label: "ORCID Profile", icon: "fa-orcid" },
+];
+
+const startups = [
+	{
+		href: "https://www.linkedin.com/company/tag-heuer-track-intelligence/",
+		logo: "/images/trackintel.png",
+		name: "Track Intelligence",
+		years: "2011 - 2016",
+		tech: "Motorsports, Big Data, Realtime & Embedded",
+	},
+	{
+		href: "https://en.wikipedia.org/wiki/Mixer_(service)",
+		logo: "/images/mixer.png",
+		name: "Mixer",
+		years: "2016 - 2020",
+		tech: "Streaming, Social, Interactivity",
+	},
+	{
+		href: "https://resonite.com",
+		logo: "/images/resonite.png",
+		name: "Resonite",
+		years: "2020 -",
+		present: true,
+		tech: "XR, Metaverse, Social",
+	},
+];
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: "ProbablePrime",
+	url: "https://probableprime.co.uk/",
+	image: "https://probableprime.co.uk/images/logo.png",
+	sameAs: socials.filter((s) => !s.href.includes("discord") && !s.href.includes("patreon")).map((s) => s.href),
+	jobTitle: "Software Developer",
+};
+
+// Latest blog post, shown as a small teaser. The page still renders if the
+// database is empty or unavailable.
+const { entries: latest, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 1,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const latestPost = latest?.[0];
+---
+
+<Landing title="ProbablePrime - Hello!" description={description} canonical="https://probableprime.co.uk/">
+	<Fragment slot="head">
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://probableprime.co.uk/" />
+		<meta property="og:title" content="ProbablePrime - Hello!" />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="https://probableprime.co.uk/images/logo.png" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@probableprime" />
+		<meta name="twitter:creator" content="@probableprime" />
+		<meta name="twitter:title" content="ProbablePrime - Hello!" />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content="https://probableprime.co.uk/images/logo.png" />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+	</Fragment>
+
+	<main class="v">
+		<div class="row center-xs middle-xs">
+			<div class="col-xs-12 col-sm-4 col-md-12 f">
+				<a href="https://x.com/ProbablePrime" target="_blank" rel="noopener noreferrer" aria-label="ProbablePrime's X profile"
+					><img src="/images/logo.png" alt="ProbablePrime's Logo" /></a
+				>
+			</div>
+		</div>
+		<div class="row center-xs middle-xs text">
+			<div class="col-xs-12 col-sm-4 col-md-12 f tagline">
+				Hi, I'm ProbablePrime, I work on cool stuff. How can I <a href="/contact">help you</a>?
+			</div>
+		</div>
+		<div class="row center-xs middle-xs icons">
+			{
+				socials.map((s) => (
+					<div class="col-sm-4 col-md-1 f">
+						<a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+							<span class={`inline-icon fa-brands ${s.icon}`} aria-hidden="true" />
+						</a>
+					</div>
+				))
+			}
+		</div>
+		<div class="row center-xs middle-xs startups">
+			{
+				startups.map((s) => (
+					<div class="col-xs-12 col-sm-6 col-md-3 col-startup">
+						<a href={s.href} target="_blank" rel="noopener noreferrer">
+							<div class="startup-item">
+								<img src={s.logo} class="startup-logo" alt={`${s.name} Logo`} />
+								<div class="startup-info">
+									<div class="startup-name">{s.name}</div>
+									<div class="startup-years">
+										{s.years} {s.present && <strong>Present</strong>}
+									</div>
+									<div class="startup-technology">{s.tech}</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				))
+			}
+		</div>
+		<div class="row center-xs middle-xs">
+			<div class="col-xs-12 col-sm-4 col-md-12 kofi">
+				<a href="https://ko-fi.com/probableprime" target="_blank" rel="noopener noreferrer">
+					<img src="/images/kofi.png" alt="Buy me a Coffee on Ko-fi" />
+				</a>
+			</div>
+		</div>
+		<div class="row center-xs middle-xs seven">
+			<div class="col-xs-12 col-sm-4 col-md-12 kofi">
+				<a href="/7/" target="_blank" rel="noopener noreferrer">7</a>
+			</div>
+		</div>
+		{
+			latestPost && (
+				<div class="row center-xs middle-xs latest-post">
+					<div class="col-xs-12">
+						Latest post: <a href={`/posts/${latestPost.id}`}>{latestPost.data.title}</a>
+					</div>
+				</div>
+			)
+		}
+		<div class="row center-xs middle-xs">
+			<div class="col-xs-12 footer-links">
+				<a href="/blog">📝 Blog</a>
+				<a href="/contact">📧 Email Me</a>
+			</div>
+		</div>
+	</main>
+</Landing>

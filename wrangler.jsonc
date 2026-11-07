@@ -1,26 +1,42 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "probableprime-co-uk",
-  "main": "src/index.js",
-  "compatibility_date": "2024-08-19",
-  "assets": {
-    "directory": "./",
-    "binding": "ASSETS",
-    "run_worker_first": ["/contact"]
-  },
-  "routes": [
-    { "pattern": "probableprime.co.uk", "custom_domain": true },
-    { "pattern": "www.probableprime.co.uk", "custom_domain": true }
-  ],
-  "observability": {
-    "enabled": true,
-    "head_sampling_rate": 1,
-    "logs": {
-      "enabled": true,
-      "invocation_logs": false
-    },
-    "traces": {
-      "enabled": true
-    }
-  }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "probableprime-co-uk",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	// EmDash content database. Created on first `wrangler deploy` if it doesn't exist.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "probableprime-co-uk",
+		},
+	],
+	// EmDash media library (images uploaded through the admin).
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "probableprime-co-uk-media",
+		},
+	],
+	// Sandboxed plugins require Worker Loader, available on Workers paid plans. Uncomment to enable:
+	// "worker_loaders": [{ "binding": "LOADER" }],
+	// EmDash maintenance + scheduled publishing
+	"triggers": {
+		"crons": ["* * * * *"],
+	},
+	"routes": [
+		{ "pattern": "probableprime.co.uk", "custom_domain": true },
+		{ "pattern": "www.probableprime.co.uk", "custom_domain": true },
+	],
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+		"logs": {
+			"enabled": true,
+			"invocation_logs": false,
+		},
+		"traces": {
+			"enabled": true,
+		},
+	},
 }

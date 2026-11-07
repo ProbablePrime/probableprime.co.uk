@@ -1,0 +1,372 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "ProbablePrime",
+		"description": "Personal site and blog of ProbablePrime",
+		"author": "ProbablePrime"
+	},
+	"settings": {
+		"title": "ProbablePrime",
+		"tagline": "Notes on software, XR, streaming and whatever else I'm working on."
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"urlPattern": "/posts/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"commentsEnabled": false,
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/pages/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "development",
+					"label": "Development"
+				},
+				{
+					"slug": "resonite",
+					"label": "Resonite"
+				},
+				{
+					"slug": "notes",
+					"label": "Notes"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "meta",
+					"label": "Meta"
+				},
+				{
+					"slug": "xr",
+					"label": "XR"
+				},
+				{
+					"slug": "tools",
+					"label": "Tools"
+				}
+			]
+		}
+	],
+	"bylines": [
+		{
+			"id": "byline-probableprime",
+			"slug": "probableprime",
+			"displayName": "ProbablePrime"
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Blog",
+					"url": "/blog"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/pages/about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Widget area displayed on single post pages",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:categories",
+					"title": "Categories"
+				},
+				{
+					"type": "component",
+					"componentId": "core:tags",
+					"title": "Tags"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent Posts",
+					"props": {
+						"count": 5,
+						"showDate": true
+					}
+				},
+				{
+					"type": "component",
+					"componentId": "core:archives",
+					"title": "Archives",
+					"props": {
+						"type": "monthly",
+						"limit": 6
+					}
+				}
+			]
+		},
+		{
+			"name": "footer",
+			"label": "Footer",
+			"description": "Widget area displayed in the site footer",
+			"widgets": [
+				{
+					"type": "content",
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hi, I'm ProbablePrime. I work on cool stuff, and sometimes I write about it.",
+									"_key": "k0"
+								}
+							],
+							"_key": "k1"
+						}
+					]
+				}
+			]
+		}
+	],
+	"sections": [
+		{
+			"slug": "about-author",
+			"title": "About the Author",
+			"description": "Brief author bio for use in posts or pages",
+			"keywords": [
+				"author",
+				"bio",
+				"about"
+			],
+			"source": "theme",
+			"content": [
+				{
+					"_type": "block",
+					"style": "normal",
+					"children": [
+						{
+							"_type": "span",
+							"text": "ProbablePrime is a software developer who has worked on Track Intelligence, Mixer and Resonite.",
+							"_key": "k2"
+						}
+					],
+					"_key": "k3"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hi, I'm ProbablePrime. I'm a software developer and I work on cool stuff.",
+									"_key": "k4"
+								}
+							],
+							"_key": "k5"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Over the years that has included motorsport telemetry at Track Intelligence (2011 to 2016), streaming and interactivity at Mixer (2016 to 2020), and XR and social at Resonite (2020 to now).",
+									"_key": "k6"
+								}
+							],
+							"_key": "k7"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If you want to get in touch, use the contact page.",
+									"_key": "k8"
+								}
+							],
+							"_key": "k9"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-hello",
+				"slug": "hello-blog",
+				"status": "published",
+				"bylines": [
+					{
+						"byline": "byline-probableprime"
+					}
+				],
+				"taxonomies": {
+					"category": [
+						"notes"
+					],
+					"tag": [
+						"meta"
+					]
+				},
+				"data": {
+					"title": "Hello, blog",
+					"excerpt": "I finally have somewhere to write things down.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "For years this site has been a single page of links. I kept meaning to start a blog and never had the time to set one up.",
+									"_key": "k10"
+								}
+							],
+							"_key": "k11"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Now there is one. It runs on EmDash, an Astro based CMS, on Cloudflare Workers, which is where the site already lived.",
+									"_key": "k12"
+								}
+							],
+							"_key": "k13"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "More soon.",
+									"_key": "k14"
+								}
+							],
+							"_key": "k15"
+						}
+					]
+				}
+			}
+		]
+	}
+}

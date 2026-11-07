@@ -216,3 +216,38 @@ select, option {
     display: inline-block;
     text-decoration: underline;
 }
+
+/* Pages that need to scroll (contact, success) */
+html:has(body.scroll),
+body.scroll {
+    height: auto;
+    min-height: 100%;
+    overflow: auto;
+}
+body.scroll .v {
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.footer-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 2em;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.footer-links a {
+    font-size: 1.5em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.latest-post {
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+.latest-post a {
+    text-decoration: underline;
+    font-weight: bold;
+}
