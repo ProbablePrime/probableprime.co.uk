@@ -1,0 +1,178 @@
+---
+/**
+ * About: the "about" entry from the pages collection (editable in the
+ * admin), followed by the hand-maintained startups list.
+ */
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import { personJsonLd, startups } from "../data/profile";
+import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import "../styles/prose.css";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "about");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
+const seo = page
+	? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" })
+	: null;
+const title = page?.data.title ?? "About";
+---
+
+<Base
+	title={seo?.title ?? title}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? "About ProbablePrime and the things I've worked on."}
+	canonical={seo?.canonical}
+	robots={seo?.robots}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+
+	<article class="band page">
+		<div class="frame page__layout">
+			<header class="page__header">
+				<img src="/images/logo.png" alt="" width="97" height="100" class="page__avatar" />
+				<h1 class="page__title" {...page?.edit.title}>{title}</h1>
+			</header>
+
+			{
+				page && (
+					<div class="prose page__body" {...page.edit.content}>
+						<PortableText value={page.data.content} />
+					</div>
+				)
+			}
+		</div>
+	</article>
+
+	<section class="band section" aria-labelledby="startups-title">
+		<div class="frame">
+			<h2 id="startups-title" class="eyebrow startups__title">Where I've worked</h2>
+			<ul class="startups">
+				{
+					startups.map((s) => (
+						<li>
+							<a class="startup" href={s.href} target="_blank" rel="noopener noreferrer">
+								<span class="startup__logo">
+									<img src={s.logo} alt="" loading="lazy" />
+								</span>
+								<span class="startup__name">{s.name}</span>
+								<span class="startup__years">
+									{s.years} {s.present && <strong>Present</strong>}
+								</span>
+								<span class="startup__tech">{s.tech}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.page {
+		padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+	}
+
+	.page__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-8);
+	}
+
+	.page__avatar {
+		width: 72px;
+		height: auto;
+		margin-bottom: var(--spacing-5);
+	}
+
+	.page__title {
+		font-size: var(--font-size-display);
+		line-height: 1.05;
+	}
+
+	@media (min-width: 960px) {
+		.page__layout {
+			grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--content-width));
+			column-gap: clamp(2rem, 1rem + 4vw, 6rem);
+		}
+	}
+
+	.section {
+		padding-block: var(--spacing-12) var(--spacing-16);
+	}
+
+	.startups__title {
+		margin-bottom: var(--spacing-6);
+	}
+
+	.startups {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+		gap: var(--spacing-5);
+		list-style: none;
+	}
+
+	.startup {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--spacing-1);
+		height: 100%;
+		padding: var(--card-padding);
+		padding-bottom: var(--spacing-6);
+		border-radius: var(--radius-xl);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-card);
+		color: var(--color-text);
+		text-align: center;
+		text-decoration: none;
+		transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+	}
+
+	.startup:hover {
+		box-shadow: var(--shadow-card-hover);
+		transform: translateY(-2px);
+	}
+
+	/* The logos are a mix of dark and light artwork, so they sit on the
+	   brand blue from the original site in both colour modes. */
+	.startup__logo {
+		display: grid;
+		place-items: center;
+		align-self: stretch;
+		height: 140px;
+		margin-bottom: var(--spacing-4);
+		padding: var(--spacing-5);
+		border-radius: var(--radius-lg);
+		background: var(--pp-blue);
+	}
+
+	.startup__logo img {
+		max-height: 100px;
+		max-width: 100%;
+		width: auto;
+		object-fit: contain;
+	}
+
+	.startup__name {
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-heading);
+	}
+
+	.startup__years {
+		color: var(--color-text-secondary);
+	}
+
+	.startup__years strong {
+		color: var(--color-brand);
+	}
+
+	.startup__tech {
+		font-size: var(--font-size-sm);
+		color: var(--color-muted);
+	}
+</style>

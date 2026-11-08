@@ -1,0 +1,135 @@
+---
+import { env } from "cloudflare:workers";
+import Base from "../layouts/Base.astro";
+import { handleContactForm, type ContactEnv } from "../lib/contact";
+
+if (Astro.request.method === "POST") {
+	return handleContactForm(Astro.request, env as unknown as ContactEnv);
+}
+
+const categories = [
+	"General Enquiry",
+	"PR Enquiry",
+	"Business Proposal",
+	"Media Appearances",
+	"Questions",
+	"Comments",
+];
+---
+
+<Base title="Contact" description="Get in touch with ProbablePrime.">
+	<script
+		slot="head"
+		is:inline
+		src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+		async
+		defer></script>
+
+	<header class="band intro">
+		<div class="frame">
+			<p class="eyebrow">Contact</p>
+			<h1 class="intro__title">How can I help?</h1>
+			<p class="intro__subtitle">Send me a message and I'll get back to you.</p>
+		</div>
+	</header>
+
+	<section class="band section">
+		<div class="frame">
+			<form action="/contact" method="POST" class="contact-form">
+				<div class="field-row">
+					<div class="field">
+						<label for="name">Name</label>
+						<input type="text" id="name" name="name" autocomplete="name" required />
+					</div>
+					<div class="field">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" autocomplete="email" required />
+					</div>
+				</div>
+
+				<div class="field">
+					<label for="cat">Category</label>
+					<select id="cat" name="cat" required>
+						<option value="">Select a category...</option>
+						{categories.map((c) => <option value={c}>{c}</option>)}
+					</select>
+				</div>
+
+				<div class="field">
+					<label for="message">Message</label>
+					<textarea id="message" name="message" rows="7" required></textarea>
+				</div>
+
+				<div hidden>
+					<input type="checkbox" name="GsCxeZTv" value="Yes" tabindex="-1" autocomplete="off" />
+				</div>
+
+				<div class="cf-turnstile" data-sitekey="0x4AAAAAAEWM1SAh23iQ5K5p" data-theme="auto"></div>
+
+				<div>
+					<button type="submit" class="btn">Send message</button>
+				</div>
+			</form>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.section {
+		padding-block: var(--spacing-12) var(--spacing-16);
+	}
+
+	.contact-form {
+		display: grid;
+		gap: var(--spacing-5);
+		max-width: var(--content-width);
+		padding: clamp(var(--spacing-5), 4vw, var(--spacing-10));
+		border-radius: var(--radius-xl);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-card);
+	}
+
+	.field-row {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--spacing-5);
+	}
+
+	.field {
+		display: grid;
+		gap: var(--spacing-2);
+	}
+
+	label {
+		font-size: var(--font-size-sm);
+		font-weight: 600;
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		padding: 0.625rem 0.75rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius);
+		background: var(--color-bg);
+		color: var(--color-text);
+		font: inherit;
+		transition:
+			border-color var(--transition-fast),
+			box-shadow var(--transition-fast);
+	}
+
+	textarea {
+		resize: vertical;
+		min-height: 9rem;
+	}
+
+	input:focus,
+	select:focus,
+	textarea:focus {
+		outline: none;
+		border-color: var(--color-brand);
+		box-shadow: 0 0 0 3px var(--color-brand-ring);
+	}
+</style>
