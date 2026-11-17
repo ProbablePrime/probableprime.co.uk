@@ -24,17 +24,20 @@ const tone = background === "dark" ? "dark" : "light";
 </span>
 
 <style>
+	/* The parent sets the tile's width/height. A single minmax(0, 1fr) cell
+	   gives the image a definite box, and object-fit scales any logo shape
+	   (wide wordmark or square mark) to fit inside it. */
 	.logo-tile {
 		display: grid;
-		place-items: center;
+		grid-template: minmax(0, 1fr) / minmax(0, 1fr);
 		padding: var(--spacing-4);
 		border-radius: var(--radius-lg);
 	}
 
 	.logo-tile :global(img) {
-		max-height: 100%;
-		max-width: 100%;
-		width: auto;
+		width: 100%;
+		height: 100%;
+		max-width: none;
 		object-fit: contain;
 	}
 
