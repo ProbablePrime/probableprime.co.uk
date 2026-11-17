@@ -2,13 +2,14 @@
 /**
  * About: the "about" entry from the pages collection, followed by the
  * companies collection. Both are edited in the admin (Pages > About and
- * Companies); each company links to its own page at /work/[slug].
+ * Companies); each company links to its own page at /work/[slug]. The
+ * "Find me elsewhere" links are the footer's socials (src/data/profile.ts).
  */
 import { getEmDashCollection, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import CompanyLogo from "../components/CompanyLogo.astro";
-import { personJsonLd } from "../data/profile";
+import { personJsonLd, socials } from "../data/profile";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import "../styles/prose.css";
 
@@ -86,6 +87,32 @@ const title = page?.data.title ?? "About";
 			</section>
 		)
 	}
+
+	<section class="band section" aria-labelledby="elsewhere-title">
+		<div class="frame">
+			<h2 id="elsewhere-title" class="eyebrow startups__title">Find me elsewhere</h2>
+			<ul class="elsewhere">
+				{
+					socials.map((s) => (
+						<li>
+							<a
+								class="elsewhere__link"
+								href={s.href}
+								target="_blank"
+								rel="noopener noreferrer me"
+								style={`--social-color: ${s.color}`}
+							>
+								<span class="elsewhere__icon" aria-hidden="true">
+									<span class={`fa-brands ${s.icon}`} />
+								</span>
+								<span class="elsewhere__label">{s.label}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
 </Base>
 
 <style>
@@ -178,5 +205,47 @@ const title = page?.data.title ?? "About";
 	.startup__tech {
 		font-size: var(--font-size-sm);
 		color: var(--color-muted);
+	}
+
+	.elsewhere {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+		gap: var(--spacing-4);
+		list-style: none;
+	}
+
+	.elsewhere__link {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4);
+		height: 100%;
+		padding: var(--spacing-3);
+		padding-inline-end: var(--spacing-5);
+		border-radius: var(--radius-xl);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-card);
+		color: var(--color-text);
+		font-weight: var(--font-weight-heading);
+		text-decoration: none;
+		transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+	}
+
+	.elsewhere__link:hover {
+		box-shadow: var(--shadow-card-hover);
+		transform: translateY(-2px);
+	}
+
+	.elsewhere__icon {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		background: var(--social-color);
+		color: #fff;
+		font-size: 1.375rem;
+		/* Keep near-black brands (GitHub, X) visible on the dark canvas */
+		box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
 	}
 </style>
