@@ -55,6 +55,8 @@ A blog with posts, pages, categories, tags, full-text search, and RSS. Designed 
 | Post detail | `/posts/[slug]`    | Tags, title, excerpt, featured image, then a three-column reading view: meta rail, body, table of contents and sidebar widgets |
 | Search      | `/search`          | Full-text search over posts; matching title terms are highlighted                                                              |
 | Page        | `/pages/[slug]`    | Static page content (Portable Text)                                                                                            |
+| About       | `/about`           | The `about` entry from `pages`, then "Where I've worked" cards from `companies` (ordered by `sort_order`)                      |
+| Company     | `/work/[slug]`     | One `companies` entry: logo, years, focus, website link, then the body (Portable Text)                                         |
 | Category    | `/category/[slug]` | Card grid of posts in a category                                                                                               |
 | Tag         | `/tag/[slug]`      | Card grid of posts with a tag                                                                                                  |
 | RSS         | `/rss.xml`         | Generated feed                                                                                                                 |
@@ -63,6 +65,7 @@ A blog with posts, pages, categories, tags, full-text search, and RSS. Designed 
 
 - `posts` collection: `title`, `featured_image`, `content` (Portable Text), `excerpt` (text).
 - `pages` collection: `title`, `content` (Portable Text). Used for `/about` etc.
+- `companies` collection: `title`, `logo` (image), `years`, `current` (boolean), `tech`, `website` (url), `summary` (text), `content` (Portable Text), `sort_order` (integer). Added to the live site with `scripts/setup-companies.mjs`, since seed changes don't reach an existing database.
 - Taxonomies: `category`, `tag`.
 - Single `primary` menu (Home, About, Posts by default).
 

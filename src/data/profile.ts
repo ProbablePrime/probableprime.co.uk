@@ -1,7 +1,7 @@
 /**
- * Hand-maintained profile data: social links (footer) and past/current
- * startups (About page). Colours are each brand's own, kept from the
- * original landing page.
+ * Hand-maintained profile data: social links (footer). Colours are each
+ * brand's own, kept from the original landing page. The companies on the
+ * About page live in the CMS (Admin > Companies).
  */
 
 export interface Social {
@@ -27,40 +27,6 @@ export const socials: Social[] = [
 ];
 
 export const kofi = "https://ko-fi.com/probableprime";
-
-export interface Startup {
-	href: string;
-	logo: string;
-	name: string;
-	years: string;
-	present?: boolean;
-	tech: string;
-}
-
-export const startups: Startup[] = [
-	{
-		href: "https://www.linkedin.com/company/tag-heuer-track-intelligence/",
-		logo: "/images/trackintel.png",
-		name: "Track Intelligence",
-		years: "2011 – 2016",
-		tech: "Motorsports, Big Data, Realtime & Embedded",
-	},
-	{
-		href: "https://en.wikipedia.org/wiki/Mixer_(service)",
-		logo: "/images/mixer.png",
-		name: "Mixer",
-		years: "2016 – 2020",
-		tech: "Streaming, Social, Interactivity",
-	},
-	{
-		href: "https://resonite.com",
-		logo: "/images/resonite.png",
-		name: "Resonite",
-		years: "2020 –",
-		present: true,
-		tech: "XR, Metaverse, Social",
-	},
-];
 
 export const personJsonLd = {
 	"@context": "https://schema.org",

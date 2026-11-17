@@ -78,6 +78,76 @@
 					"searchable": true
 				}
 			]
+		},
+		{
+			"slug": "companies",
+			"label": "Companies",
+			"labelSingular": "Company",
+			"description": "Places I've worked. Shown on the About page; each one gets a page at /work/{slug}.",
+			"icon": "briefcase",
+			"urlPattern": "/work/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"seo"
+			],
+			"admin": {
+				"listColumns": [
+					"years",
+					"sort_order"
+				]
+			},
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Company name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "logo",
+					"label": "Logo",
+					"type": "image"
+				},
+				{
+					"slug": "years",
+					"label": "Years (e.g. 2016 – 2020)",
+					"type": "string"
+				},
+				{
+					"slug": "current",
+					"label": "I currently work here",
+					"type": "boolean"
+				},
+				{
+					"slug": "tech",
+					"label": "Focus areas",
+					"type": "string"
+				},
+				{
+					"slug": "website",
+					"label": "Company website",
+					"type": "url"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary (used for search engines and social cards)",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "My time there",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "sort_order",
+					"label": "Order on the About page (lowest first)",
+					"type": "integer"
+				}
+			]
 		}
 	],
 	"taxonomies": [
@@ -336,6 +406,71 @@
 							"_key": "k15"
 						}
 					]
+				}
+			}
+		],
+		"companies": [
+			{
+				"id": "company-track-intelligence",
+				"slug": "track-intelligence",
+				"status": "published",
+				"data": {
+					"title": "Track Intelligence",
+					"years": "2011 – 2016",
+					"current": false,
+					"tech": "Motorsports, Big Data, Realtime & Embedded",
+					"website": "https://www.linkedin.com/company/tag-heuer-track-intelligence/",
+					"sort_order": 1,
+					"logo": {
+						"$media": {
+							"url": "https://probableprime.co.uk/images/trackintel.png",
+							"alt": "Track Intelligence logo",
+							"filename": "trackintel.png"
+						}
+					},
+					"content": []
+				}
+			},
+			{
+				"id": "company-mixer",
+				"slug": "mixer",
+				"status": "published",
+				"data": {
+					"title": "Mixer",
+					"years": "2016 – 2020",
+					"current": false,
+					"tech": "Streaming, Social, Interactivity",
+					"website": "https://en.wikipedia.org/wiki/Mixer_(service)",
+					"sort_order": 2,
+					"logo": {
+						"$media": {
+							"url": "https://probableprime.co.uk/images/mixer.png",
+							"alt": "Mixer logo",
+							"filename": "mixer.png"
+						}
+					},
+					"content": []
+				}
+			},
+			{
+				"id": "company-resonite",
+				"slug": "resonite",
+				"status": "published",
+				"data": {
+					"title": "Resonite",
+					"years": "2020 –",
+					"current": true,
+					"tech": "XR, Metaverse, Social",
+					"website": "https://resonite.com",
+					"sort_order": 3,
+					"logo": {
+						"$media": {
+							"url": "https://probableprime.co.uk/images/resonite.png",
+							"alt": "Resonite logo",
+							"filename": "resonite.png"
+						}
+					},
+					"content": []
 				}
 			}
 		]

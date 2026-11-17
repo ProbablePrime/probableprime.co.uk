@@ -1,0 +1,181 @@
+---
+/**
+ * Company detail: one entry from the companies collection, linked from the
+ * "Where I've worked" cards on /about. Edited in the admin under Companies.
+ */
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
+import "../../styles/prose.css";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: company, cacheHint } = await getEmDashEntry("companies", slug);
+if (!company) return Astro.rewrite("/404");
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(company, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: `/work/${slug}`,
+});
+
+const { title, logo, years, current, tech, website, summary, content } = company.data;
+const hasContent = Array.isArray(content) && content.length > 0;
+
+// Show "resonite.com" rather than the full URL; fall back to the raw value
+// if the admin field holds something that isn't a valid URL.
+function displayHost(url: string) {
+	try {
+		return new URL(url).hostname.replace(/^www\./, "");
+	} catch {
+		return url;
+	}
+}
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? summary ?? `My time at ${title}.`}
+	canonical={seo.canonical}
+	robots={seo.robots}
+	content={{ collection: "companies", id: company.data.id, slug }}
+>
+	<article class="band page">
+		<div class="frame page__layout">
+			<header class="page__header">
+				<a class="eyebrow page__back" href="/about">← Where I've worked</a>
+				{
+					logo && (
+						<span class="page__logo" {...company.edit.logo}>
+							<Image image={logo} alt="" placeholder={false} priority sizes="8rem" />
+						</span>
+					)
+				}
+				<h1 class="page__title" {...company.edit.title}>{title}</h1>
+				<dl class="page__meta">
+					{
+						years && (
+							<div>
+								<dt class="eyebrow">When</dt>
+								<dd>
+									{years} {current && <strong>Present</strong>}
+								</dd>
+							</div>
+						)
+					}
+					{
+						tech && (
+							<div>
+								<dt class="eyebrow">Focus</dt>
+								<dd>{tech}</dd>
+							</div>
+						)
+					}
+					{
+						website && (
+							<div>
+								<dt class="eyebrow">Website</dt>
+								<dd>
+									<a href={website} target="_blank" rel="noopener noreferrer">
+										{displayHost(website)}
+									</a>
+								</dd>
+							</div>
+						)
+					}
+				</dl>
+			</header>
+
+			<div class="prose page__body" {...company.edit.content}>
+				{hasContent ? <PortableText value={content} /> : summary && <p>{summary}</p>}
+			</div>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.page {
+		padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) clamp(4rem, 3rem + 4vw, 7rem);
+	}
+
+	.page__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-8);
+	}
+
+	.page__back {
+		display: inline-block;
+		margin-bottom: var(--spacing-6);
+		color: var(--color-text-secondary);
+		text-decoration: none;
+	}
+
+	.page__back:hover {
+		color: var(--color-brand);
+	}
+
+	/* Same brand-blue tile as the About page cards, since the logos mix
+	   dark and light artwork. */
+	.page__logo {
+		display: grid;
+		place-items: center;
+		width: 9rem;
+		height: 6rem;
+		margin-bottom: var(--spacing-5);
+		padding: var(--spacing-4);
+		border-radius: var(--radius-lg);
+		background: var(--pp-blue);
+	}
+
+	.page__logo :global(img) {
+		max-height: 100%;
+		max-width: 100%;
+		width: auto;
+		object-fit: contain;
+	}
+
+	.page__title {
+		font-size: var(--font-size-display);
+		line-height: 1.05;
+		max-width: 22ch;
+	}
+
+	.page__meta {
+		display: grid;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-6);
+	}
+
+	.page__meta dt {
+		margin-bottom: var(--spacing-1);
+		color: var(--color-muted);
+	}
+
+	.page__meta dd {
+		color: var(--color-text-secondary);
+	}
+
+	.page__meta strong {
+		color: var(--color-brand);
+	}
+
+	@media (min-width: 960px) {
+		.page__layout {
+			grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--content-width));
+			column-gap: clamp(2rem, 1rem + 4vw, 6rem);
+		}
+
+		.page__header {
+			position: sticky;
+			top: calc(var(--nav-height) + var(--spacing-8));
+			align-self: start;
+		}
+	}
+</style>
