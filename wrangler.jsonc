@@ -3,12 +3,15 @@
 	"name": "probableprime-co-uk",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	// EmDash content database. Created on first `wrangler deploy` if it doesn't exist.
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "probableprime-co-uk",
+			"database_id": "b73a5ea1-80a5-41b5-9cec-143f674464bc",
 		},
 	],
 	// EmDash media library (images uploaded through the admin).
@@ -19,14 +22,26 @@
 		},
 	],
 	// Sandboxed EmDash plugins (SMTP, AT Protocol). Requires Workers Paid.
-	"worker_loaders": [{ "binding": "LOADER" }],
+	"worker_loaders": [
+		{
+			"binding": "LOADER"
+		}
+	],
 	// EmDash maintenance + scheduled publishing
 	"triggers": {
-		"crons": ["* * * * *"],
+		"crons": [
+			"* * * * *"
+		],
 	},
 	"routes": [
-		{ "pattern": "probableprime.co.uk", "custom_domain": true },
-		{ "pattern": "www.probableprime.co.uk", "custom_domain": true },
+		{
+			"pattern": "probableprime.co.uk",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.probableprime.co.uk",
+			"custom_domain": true
+		},
 	],
 	"observability": {
 		"enabled": true,
