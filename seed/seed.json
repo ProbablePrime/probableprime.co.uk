@@ -112,6 +112,18 @@
 					"type": "image"
 				},
 				{
+					"slug": "logo_background",
+					"label": "Logo background (light suits dark logos, dark suits light ones)",
+					"type": "select",
+					"validation": {
+						"options": [
+							"light",
+							"dark"
+						]
+					},
+					"defaultValue": "light"
+				},
+				{
 					"slug": "years",
 					"label": "Years (e.g. 2016 – 2020)",
 					"type": "string"
@@ -428,7 +440,8 @@
 							"filename": "trackintel.png"
 						}
 					},
-					"content": []
+					"content": [],
+					"logo_background": "light"
 				}
 			},
 			{
@@ -449,7 +462,8 @@
 							"filename": "mixer.png"
 						}
 					},
-					"content": []
+					"content": [],
+					"logo_background": "light"
 				}
 			},
 			{
@@ -470,7 +484,8 @@
 							"filename": "resonite.png"
 						}
 					},
-					"content": []
+					"content": [],
+					"logo_background": "dark"
 				}
 			}
 		]

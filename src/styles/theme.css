@@ -26,6 +26,11 @@
 	--color-fill-strong: light-dark(#dce8f2, #233140);
 	--color-border: light-dark(#dfe7ee, #1f2b36);
 	--color-border-strong: light-dark(#c8d6e2, #33475a);
+
+	/* Company logo tiles (src/components/CompanyLogo.astro). Fixed in both
+	   modes: each logo is assigned the tile it reads on. */
+	--logo-tile-light: #ffffff;
+	--logo-tile-dark: #121a22;
 }
 
 /* The header is the brand blue band from the old site, in both modes. */

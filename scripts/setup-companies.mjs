@@ -38,6 +38,13 @@ const COLLECTION = {
 const FIELDS = [
 	{ slug: "title", label: "Company name", type: "string", required: true, searchable: true },
 	{ slug: "logo", label: "Logo", type: "image" },
+	{
+		slug: "logo_background",
+		label: "Logo background (light suits dark logos, dark suits light ones)",
+		type: "select",
+		validation: { options: ["light", "dark"] },
+		defaultValue: "light",
+	},
 	{ slug: "years", label: "Years (e.g. 2016 – 2020)", type: "string" },
 	{ slug: "current", label: "I currently work here", type: "boolean" },
 	{ slug: "tech", label: "Focus areas", type: "string" },
@@ -77,6 +84,7 @@ const COMPANIES = [
 		logo: "public/images/resonite.png",
 		data: {
 			title: "Resonite",
+			logo_background: "dark",
 			years: "2020 –",
 			current: true,
 			tech: "XR, Metaverse, Social",

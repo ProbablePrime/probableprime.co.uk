@@ -4,8 +4,9 @@
  * "Where I've worked" cards on /about. Edited in the admin under Companies.
  */
 import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
-import { Image, PortableText } from "emdash/ui";
+import { PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
+import CompanyLogo from "../../components/CompanyLogo.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import "../../styles/prose.css";
 
@@ -24,7 +25,7 @@ const seo = getSeoMeta(company, {
 	path: `/work/${slug}`,
 });
 
-const { title, logo, years, current, tech, website, summary, content } = company.data;
+const { title, logo, logo_background, years, current, tech, website, summary, content } = company.data;
 const hasContent = Array.isArray(content) && content.length > 0;
 
 // Show "resonite.com" rather than the full URL; fall back to the raw value
@@ -52,9 +53,9 @@ function displayHost(url: string) {
 				<a class="eyebrow page__back" href="/about">← Where I've worked</a>
 				{
 					logo && (
-						<span class="page__logo" {...company.edit.logo}>
-							<Image image={logo} alt="" placeholder={false} priority sizes="8rem" />
-						</span>
+						<div class="page__logo" {...company.edit.logo}>
+							<CompanyLogo image={logo} background={logo_background} sizes="12rem" priority />
+						</div>
 					)
 				}
 				<h1 class="page__title" {...company.edit.title}>{title}</h1>
@@ -121,24 +122,13 @@ function displayHost(url: string) {
 		color: var(--color-brand);
 	}
 
-	/* Same brand-blue tile as the About page cards, since the logos mix
-	   dark and light artwork. */
 	.page__logo {
-		display: grid;
-		place-items: center;
-		width: 9rem;
-		height: 6rem;
 		margin-bottom: var(--spacing-5);
-		padding: var(--spacing-4);
-		border-radius: var(--radius-lg);
-		background: var(--pp-blue);
 	}
 
-	.page__logo :global(img) {
-		max-height: 100%;
-		max-width: 100%;
-		width: auto;
-		object-fit: contain;
+	.page__logo :global(.logo-tile) {
+		width: 12rem;
+		height: 6rem;
 	}
 
 	.page__title {
@@ -168,8 +158,8 @@ function displayHost(url: string) {
 
 	@media (min-width: 960px) {
 		.page__layout {
-			grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--content-width));
-			column-gap: clamp(2rem, 1rem + 4vw, 6rem);
+			grid-template-columns: minmax(14rem, 18rem) minmax(0, var(--content-width));
+			column-gap: var(--spacing-12);
 		}
 
 		.page__header {

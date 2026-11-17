@@ -65,7 +65,7 @@ A blog with posts, pages, categories, tags, full-text search, and RSS. Designed 
 
 - `posts` collection: `title`, `featured_image`, `content` (Portable Text), `excerpt` (text).
 - `pages` collection: `title`, `content` (Portable Text). Used for `/about` etc.
-- `companies` collection: `title`, `logo` (image), `years`, `current` (boolean), `tech`, `website` (url), `summary` (text), `content` (Portable Text), `sort_order` (integer). Added to the live site with `scripts/setup-companies.mjs`, since seed changes don't reach an existing database.
+- `companies` collection: `title`, `logo` (image), `logo_background` (select: light | dark, the neutral tile behind the logo, see `CompanyLogo.astro`), `years`, `current` (boolean), `tech`, `website` (url), `summary` (text), `content` (Portable Text), `sort_order` (integer). Added to the live site with `scripts/setup-companies.mjs`, since seed changes don't reach an existing database.
 - Taxonomies: `category`, `tag`.
 - Single `primary` menu (Home, About, Posts by default).
 

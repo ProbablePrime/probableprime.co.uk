@@ -5,8 +5,9 @@
  * Companies); each company links to its own page at /work/[slug].
  */
 import { getEmDashCollection, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
-import { Image, PortableText } from "emdash/ui";
+import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
+import CompanyLogo from "../components/CompanyLogo.astro";
 import { personJsonLd } from "../data/profile";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import "../styles/prose.css";
@@ -65,9 +66,12 @@ const title = page?.data.title ?? "About";
 							<li>
 								<a class="startup" href={`/work/${c.id}`}>
 									{c.data.logo && (
-										<span class="startup__logo">
-											<Image image={c.data.logo} alt="" placeholder={false} sizes="16rem" />
-										</span>
+										<CompanyLogo
+											class="startup__logo"
+											image={c.data.logo}
+											background={c.data.logo_background}
+											sizes="16rem"
+										/>
 									)}
 									<span class="startup__name">{c.data.title}</span>
 									<span class="startup__years">
@@ -150,24 +154,12 @@ const title = page?.data.title ?? "About";
 		transform: translateY(-2px);
 	}
 
-	/* The logos are a mix of dark and light artwork, so they sit on the
-	   brand blue from the original site in both colour modes. */
-	.startup__logo {
-		display: grid;
-		place-items: center;
+	/* Tile colour comes from CompanyLogo; this only sizes it. */
+	.startup :global(.startup__logo) {
 		align-self: stretch;
 		height: 140px;
 		margin-bottom: var(--spacing-4);
 		padding: var(--spacing-5);
-		border-radius: var(--radius-lg);
-		background: var(--pp-blue);
-	}
-
-	.startup__logo :global(img) {
-		max-height: 100px;
-		max-width: 100%;
-		width: auto;
-		object-fit: contain;
 	}
 
 	.startup__name {

@@ -1,0 +1,49 @@
+---
+/**
+ * A company logo on a neutral tile. Old logos mix dark and light artwork
+ * and have no dark-mode variants, so each company picks a light or dark
+ * tile in the admin ("Logo background") and the tile keeps that colour in
+ * both colour modes. Size the tile from the parent via `class`.
+ */
+import { Image } from "emdash/ui";
+
+interface Props {
+	image: Parameters<typeof Image>[0]["image"];
+	background?: string | null;
+	sizes: string;
+	priority?: boolean;
+	class?: string;
+}
+
+const { image, background, sizes, priority, class: className } = Astro.props;
+const tone = background === "dark" ? "dark" : "light";
+---
+
+<span class:list={["logo-tile", `logo-tile--${tone}`, className]}>
+	<Image image={image} alt="" placeholder={false} sizes={sizes} priority={priority} />
+</span>
+
+<style>
+	.logo-tile {
+		display: grid;
+		place-items: center;
+		padding: var(--spacing-4);
+		border-radius: var(--radius-lg);
+	}
+
+	.logo-tile :global(img) {
+		max-height: 100%;
+		max-width: 100%;
+		width: auto;
+		object-fit: contain;
+	}
+
+	.logo-tile--light {
+		background: var(--logo-tile-light);
+		box-shadow: inset 0 0 0 1px var(--color-border);
+	}
+
+	.logo-tile--dark {
+		background: var(--logo-tile-dark);
+	}
+</style>
