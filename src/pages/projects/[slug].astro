@@ -1,0 +1,194 @@
+---
+/**
+ * Project detail: one entry from the projects collection, linked from the
+ * "Things I've built" cards on /about. Edited in the admin under Projects.
+ */
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import LogoTile from "../../components/LogoTile.astro";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
+import "../../styles/prose.css";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: `/projects/${slug}`,
+});
+
+const { title, logo, logo_background, years, active, role, tech, website, repository, summary, content } =
+	project.data;
+const hasContent = Array.isArray(content) && content.length > 0;
+
+// Show "github.com/ProbablePrime/foo" rather than the full URL; fall back to
+// the raw value if the admin field holds something that isn't a valid URL.
+function displayUrl(url: string) {
+	try {
+		const u = new URL(url);
+		return (u.hostname.replace(/^www\./, "") + u.pathname).replace(/\/$/, "");
+	} catch {
+		return url;
+	}
+}
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? summary ?? `${title}, a project by ${siteTitle}.`}
+	canonical={seo.canonical}
+	robots={seo.robots}
+	content={{ collection: "projects", id: project.data.id, slug }}
+>
+	<article class="band page">
+		<div class="frame page__layout">
+			<header class="page__header">
+				<a class="eyebrow page__back" href="/about#projects-title">← Things I've built</a>
+				{
+					logo && (
+						<div class="page__logo" {...project.edit.logo}>
+							<LogoTile image={logo} background={logo_background} sizes="12rem" priority />
+						</div>
+					)
+				}
+				<h1 class="page__title" {...project.edit.title}>{title}</h1>
+				<dl class="page__meta">
+					{
+						(years || active) && (
+							<div>
+								<dt class="eyebrow">When</dt>
+								<dd>
+									{years} {active && <strong>Active</strong>}
+								</dd>
+							</div>
+						)
+					}
+					{
+						role && (
+							<div>
+								<dt class="eyebrow">Role</dt>
+								<dd>{role}</dd>
+							</div>
+						)
+					}
+					{
+						tech && (
+							<div>
+								<dt class="eyebrow">Built with</dt>
+								<dd>{tech}</dd>
+							</div>
+						)
+					}
+					{
+						website && (
+							<div>
+								<dt class="eyebrow">Website</dt>
+								<dd>
+									<a href={website} target="_blank" rel="noopener noreferrer">
+										{displayUrl(website)}
+									</a>
+								</dd>
+							</div>
+						)
+					}
+					{
+						repository && (
+							<div>
+								<dt class="eyebrow">Source</dt>
+								<dd>
+									<a href={repository} target="_blank" rel="noopener noreferrer">
+										{displayUrl(repository)}
+									</a>
+								</dd>
+							</div>
+						)
+					}
+				</dl>
+			</header>
+
+			<div class="prose page__body" {...project.edit.content}>
+				{hasContent ? <PortableText value={content} /> : summary && <p>{summary}</p>}
+			</div>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.page {
+		padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) clamp(4rem, 3rem + 4vw, 7rem);
+	}
+
+	.page__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-8);
+	}
+
+	.page__back {
+		display: inline-block;
+		margin-bottom: var(--spacing-6);
+		color: var(--color-text-secondary);
+		text-decoration: none;
+	}
+
+	.page__back:hover {
+		color: var(--color-brand);
+	}
+
+	.page__logo {
+		margin-bottom: var(--spacing-5);
+	}
+
+	.page__logo :global(.logo-tile) {
+		width: 12rem;
+		height: 6rem;
+	}
+
+	.page__title {
+		font-size: var(--font-size-display);
+		line-height: 1.05;
+		max-width: 22ch;
+	}
+
+	.page__meta {
+		display: grid;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-6);
+	}
+
+	.page__meta dt {
+		margin-bottom: var(--spacing-1);
+		color: var(--color-muted);
+	}
+
+	.page__meta dd {
+		color: var(--color-text-secondary);
+		overflow-wrap: anywhere;
+	}
+
+	.page__meta strong {
+		color: var(--color-brand);
+	}
+
+	@media (min-width: 960px) {
+		.page__layout {
+			grid-template-columns: minmax(14rem, 18rem) minmax(0, var(--content-width));
+			column-gap: var(--spacing-12);
+		}
+
+		.page__header {
+			position: sticky;
+			top: calc(var(--nav-height) + var(--spacing-8));
+			align-self: start;
+		}
+	}
+</style>

@@ -1,14 +1,15 @@
 ---
 /**
  * About: the "about" entry from the pages collection, followed by the
- * companies collection. Both are edited in the admin (Pages > About and
- * Companies); each company links to its own page at /work/[slug]. The
+ * companies and projects collections. All three are edited in the admin
+ * (Pages > About, Companies and Projects); each company links to its own
+ * page at /work/[slug] and each project to /projects/[slug]. The
  * "Find me elsewhere" links are the footer's socials (src/data/profile.ts).
  */
 import { getEmDashCollection, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
-import CompanyLogo from "../components/CompanyLogo.astro";
+import LogoTile from "../components/LogoTile.astro";
 import { personJsonLd, socials } from "../data/profile";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import "../styles/prose.css";
@@ -18,9 +19,14 @@ const { entries: companies, cacheHint: companiesCacheHint } = await getEmDashCol
 	"companies",
 	{ orderBy: { sort_order: "asc" } },
 );
+const { entries: projects, cacheHint: projectsCacheHint } = await getEmDashCollection(
+	"projects",
+	{ orderBy: { sort_order: "asc" } },
+);
 if (Astro.cache?.enabled) {
 	Astro.cache.set(cacheHint);
 	Astro.cache.set(companiesCacheHint);
+	Astro.cache.set(projectsCacheHint);
 }
 
 const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
@@ -67,7 +73,7 @@ const title = page?.data.title ?? "About";
 							<li>
 								<a class="startup" href={`/work/${c.id}`}>
 									{c.data.logo && (
-										<CompanyLogo
+										<LogoTile
 											class="startup__logo"
 											image={c.data.logo}
 											background={c.data.logo_background}
@@ -79,6 +85,40 @@ const title = page?.data.title ?? "About";
 										{c.data.years} {c.data.current && <strong>Present</strong>}
 									</span>
 									{c.data.tech && <span class="startup__tech">{c.data.tech}</span>}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		projects.length > 0 && (
+			<section class="band section" aria-labelledby="projects-title">
+				<div class="frame">
+					<h2 id="projects-title" class="eyebrow startups__title">Things I've built</h2>
+					<ul class="startups">
+						{projects.map((p) => (
+							<li>
+								<a class="startup" href={`/projects/${p.id}`}>
+									{p.data.logo && (
+										<LogoTile
+											class="startup__logo"
+											image={p.data.logo}
+											background={p.data.logo_background}
+											sizes="16rem"
+										/>
+									)}
+									<span class="startup__name">{p.data.title}</span>
+									{(p.data.years || p.data.active) && (
+										<span class="startup__years">
+											{p.data.years} {p.data.active && <strong>Active</strong>}
+										</span>
+									)}
+									{p.data.summary && <span class="startup__summary">{p.data.summary}</span>}
+									{p.data.tech && <span class="startup__tech">{p.data.tech}</span>}
 								</a>
 							</li>
 						))}
@@ -181,7 +221,7 @@ const title = page?.data.title ?? "About";
 		transform: translateY(-2px);
 	}
 
-	/* Tile colour comes from CompanyLogo; this only sizes it. */
+	/* Tile colour comes from LogoTile; this only sizes it. */
 	.startup :global(.startup__logo) {
 		align-self: stretch;
 		height: 140px;
@@ -200,6 +240,12 @@ const title = page?.data.title ?? "About";
 
 	.startup__years strong {
 		color: var(--color-brand);
+	}
+
+	.startup__summary {
+		margin-top: var(--spacing-1);
+		color: var(--color-text-secondary);
+		font-size: var(--font-size-sm);
 	}
 
 	.startup__tech {

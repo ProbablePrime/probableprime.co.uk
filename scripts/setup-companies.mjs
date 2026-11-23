@@ -15,14 +15,7 @@
  * Production (create a token under Admin > Settings > API Tokens, then):
  *   EMDASH_TOKEN=... node scripts/setup-companies.mjs --url https://probableprime.co.uk
  */
-import { readFile } from "node:fs/promises";
-import { basename } from "node:path";
-
-const args = process.argv.slice(2);
-const urlFlag = args.indexOf("--url");
-const BASE = (urlFlag >= 0 ? args[urlFlag + 1] : "http://localhost:4321").replace(/\/$/, "");
-const API = `${BASE}/_emdash/api`;
-const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(BASE);
+import { BASE, api, authenticate, ensureCollection, ensureFields, uploadImage } from "./lib/emdash-api.mjs";
 
 const COLLECTION = {
 	slug: "companies",
@@ -94,78 +87,6 @@ const COMPANIES = [
 	},
 ];
 
-const headers = { "X-EmDash-Request": "1" };
-
-async function authenticate() {
-	if (process.env.EMDASH_TOKEN) {
-		headers.Authorization = `Bearer ${process.env.EMDASH_TOKEN}`;
-		return;
-	}
-	if (!isLocal) throw new Error("Set EMDASH_TOKEN to run against a remote site.");
-	const res = await fetch(`${API}/setup/dev-bypass?redirect=/`, { redirect: "manual" });
-	const cookies = res.headers.getSetCookie().map((c) => c.split(";")[0]);
-	if (!cookies.length) throw new Error(`Dev bypass failed (${res.status}). Is \`pnpm dev\` running?`);
-	headers.Cookie = cookies.join("; ");
-}
-
-async function api(method, path, body) {
-	const init = { method, headers: { ...headers } };
-	if (body instanceof FormData) init.body = body;
-	else if (body !== undefined) {
-		init.headers["Content-Type"] = "application/json";
-		init.body = JSON.stringify(body);
-	}
-	const res = await fetch(`${API}${path}`, init);
-	const json = await res.json().catch(() => ({}));
-	if (!res.ok || json.success === false) {
-		const err = new Error(`${method} ${path}: ${res.status} ${JSON.stringify(json.error ?? json)}`);
-		err.status = res.status;
-		throw err;
-	}
-	return json.data;
-}
-
-async function ensureCollection() {
-	try {
-		const existing = await api("GET", `/schema/collections/${COLLECTION.slug}`);
-		console.log(`Collection "${COLLECTION.slug}" already exists`);
-		return existing;
-	} catch (e) {
-		if (e.status !== 404) throw e;
-	}
-	await api("POST", "/schema/collections", COLLECTION);
-	console.log(`Created collection "${COLLECTION.slug}"`);
-}
-
-async function ensureFields() {
-	const list = await api("GET", `/schema/collections/${COLLECTION.slug}/fields`);
-	const have = new Set((list.items ?? list.fields ?? list).map((f) => f.slug));
-	for (const [i, field] of FIELDS.entries()) {
-		if (have.has(field.slug)) continue;
-		await api("POST", `/schema/collections/${COLLECTION.slug}/fields`, { ...field, sortOrder: i });
-		console.log(`  + field ${field.slug}`);
-	}
-}
-
-async function uploadLogo(path, alt) {
-	const bytes = await readFile(path);
-	const form = new FormData();
-	form.append("file", new Blob([bytes], { type: "image/png" }), basename(path));
-	form.append("alt", alt);
-	form.append("deduplicate", "true");
-	const { item } = await api("POST", "/media", form);
-	return {
-		provider: "local",
-		id: item.id,
-		alt,
-		width: item.width ?? undefined,
-		height: item.height ?? undefined,
-		mimeType: item.mimeType,
-		filename: item.filename,
-		meta: { storageKey: item.storageKey },
-	};
-}
-
 async function ensureCompanies() {
 	const { items } = await api("GET", `/content/${COLLECTION.slug}?limit=100`);
 	const have = new Set(items.map((i) => i.slug));
@@ -174,7 +95,7 @@ async function ensureCompanies() {
 			console.log(`  = ${company.slug} already exists`);
 			continue;
 		}
-		const logo = await uploadLogo(company.logo, `${company.data.title} logo`);
+		const logo = await uploadImage(company.logo, `${company.data.title} logo`);
 		const created = await api("POST", `/content/${COLLECTION.slug}`, {
 			slug: company.slug,
 			data: { ...company.data, logo, content: [] },
@@ -187,7 +108,7 @@ async function ensureCompanies() {
 
 await authenticate();
 console.log(`Target: ${BASE}`);
-await ensureCollection();
-await ensureFields();
+await ensureCollection(COLLECTION);
+await ensureFields(COLLECTION.slug, FIELDS);
 await ensureCompanies();
 console.log("Done.");

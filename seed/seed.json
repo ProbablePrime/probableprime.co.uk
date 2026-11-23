@@ -160,6 +160,98 @@
 					"type": "integer"
 				}
 			]
+		},
+		{
+			"slug": "projects",
+			"label": "Projects",
+			"labelSingular": "Project",
+			"description": "Things I've built. Shown on the About page; each one gets a page at /projects/{slug}.",
+			"icon": "code",
+			"urlPattern": "/projects/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"seo"
+			],
+			"admin": {
+				"listColumns": [
+					"years",
+					"sort_order"
+				]
+			},
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Project name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "logo",
+					"label": "Logo or icon",
+					"type": "image"
+				},
+				{
+					"slug": "logo_background",
+					"label": "Logo background (light suits dark logos, dark suits light ones)",
+					"type": "select",
+					"validation": {
+						"options": [
+							"light",
+							"dark"
+						]
+					},
+					"defaultValue": "light"
+				},
+				{
+					"slug": "years",
+					"label": "Years (e.g. 2018 – 2021)",
+					"type": "string"
+				},
+				{
+					"slug": "active",
+					"label": "Still active",
+					"type": "boolean"
+				},
+				{
+					"slug": "role",
+					"label": "My role (e.g. Creator, Maintainer)",
+					"type": "string"
+				},
+				{
+					"slug": "tech",
+					"label": "Built with",
+					"type": "string"
+				},
+				{
+					"slug": "website",
+					"label": "Project website",
+					"type": "url"
+				},
+				{
+					"slug": "repository",
+					"label": "Source code (e.g. GitHub URL)",
+					"type": "url"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary (used on the About card, search engines and social cards)",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "About the project",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "sort_order",
+					"label": "Order on the About page (lowest first)",
+					"type": "integer"
+				}
+			]
 		}
 	],
 	"taxonomies": [

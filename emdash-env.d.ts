@@ -11,8 +11,8 @@ export interface Company {
   status: string;
   title: string;
   logo?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  years?: string;
   logo_background?: "light" | "dark";
+  years?: string;
   current?: boolean;
   tech?: string;
   website?: string;
@@ -57,10 +57,35 @@ export interface Post {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Project {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  logo?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  logo_background?: "light" | "dark";
+  years?: string;
+  active?: boolean;
+  role?: string;
+  tech?: string;
+  website?: string;
+  repository?: string;
+  summary?: string;
+  content?: PortableTextBlock[];
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     companies: Company;
     pages: Page;
     posts: Post;
+    projects: Project;
   }
 }

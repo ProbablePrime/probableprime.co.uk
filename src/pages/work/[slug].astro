@@ -6,7 +6,7 @@
 import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
-import CompanyLogo from "../../components/CompanyLogo.astro";
+import LogoTile from "../../components/LogoTile.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import "../../styles/prose.css";
 
@@ -54,7 +54,7 @@ function displayHost(url: string) {
 				{
 					logo && (
 						<div class="page__logo" {...company.edit.logo}>
-							<CompanyLogo image={logo} background={logo_background} sizes="12rem" priority />
+							<LogoTile image={logo} background={logo_background} sizes="12rem" priority />
 						</div>
 					)
 				}
