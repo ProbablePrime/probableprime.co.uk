@@ -6,6 +6,7 @@ import {
 	getSeoMeta,
 	decodeSlug,
 	getSiteSettings,
+	getCommentCount,
 } from "emdash";
 import { Image, PortableText, WidgetArea } from "emdash/ui";
 import { Comments, CommentForm } from "emdash/ui/comments";
@@ -68,6 +69,10 @@ const bylines = post.data.bylines ?? [];
 
 // Get reading time
 const readingTime = getReadingTime(post.data.content);
+
+// Approved comments only. Zero hides the fact, so nothing points at the
+// Discussion section while comments are switched off for the collection.
+const commentCount = await getCommentCount("posts", post.data.id);
 
 // This post's tags are already hydrated onto the entry by getEmDashEntry —
 // no extra query needed.
@@ -229,6 +234,16 @@ const hasHeadings = (post.data.content ?? []).some(
 							<dt class="eyebrow">Reading time</dt>
 							<dd>{readingTime} min</dd>
 						</div>
+						{
+							commentCount > 0 && (
+								<div class="post-fact">
+									<dt class="eyebrow">Comments</dt>
+									<dd>
+										<a href="#comments-title">{commentCount}</a>
+									</dd>
+								</div>
+							)
+						}
 					</dl>
 				</div>
 

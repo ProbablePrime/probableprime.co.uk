@@ -24,7 +24,7 @@
 				"search",
 				"seo"
 			],
-			"commentsEnabled": false,
+			"commentsEnabled": true,
 			"fields": [
 				{
 					"slug": "title",
